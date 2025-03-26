@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - E-Voting System</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="login.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="logo">
+                <h1><a href="index.html">E-Vote</a></h1>
+            </div>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="index.html#elections">Elections</a></li>
+                <li><a href="index.html#candidates">Candidates</a></li>
+                <li><a href="index.html#about">About</a></li>
+                <li><a href="index.html#contact">Contact</a></li>
+            </ul>
+            <div class="auth-buttons">
+                <a href="login.html" class="btn login-btn active">Login</a>
+                <a href="register.html" class="btn register-btn">Register</a>
+            </div>
+            <div class="hamburger">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section class="login-section">
+            <div class="login-container">
+                <div class="login-header">
+                    <h2>Login to Your Account</h2>
+                    <p>Welcome back! Please enter your credentials to access your account.</p>
+                </div>
+                
+                <div class="login-form-container">
+                    <form id="loginForm" class="login-form">
+                        <div class="form-group">
+                            <label for="userId"><i class="fas fa-user"></i> User ID</label>
+                            <input type="text" id="userId" name="userId" placeholder="Enter your user ID" required>
+                            <span class="error-message" id="userIdError"></span>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="password"><i class="fas fa-lock"></i> Password</label>
+                            <div class="password-input-container">
+                                <input type="password" id="password" name="password" placeholder="Enter your password" required>
+                                <span class="password-toggle" id="passwordToggle">
+                                    <i class="far fa-eye"></i>
+                                </span>
+                            </div>
+                            <span class="error-message" id="passwordError"></span>
+                        </div>
+                        
+                        <div class="form-options">
+                            <div class="remember-me">
+                                <input type="checkbox" id="rememberMe" name="rememberMe">
+                                <label for="rememberMe">Remember me</label>
+                            </div>
+                            <a href="#" class="forgot-password">Forgot Password?</a>
+                        </div>
+                        
+                        <div class="form-group">
+                            <button type="submit" class="btn login-submit-btn">Login</button>
+                        </div>
+                        
+                        <div class="login-message" id="loginMessage"></div>
+                    </form>
+                </div>
+                
+                <div class="login-footer">
+                    <p>Don't have an account? <a href="register.html">Register Now</a></p>
+                </div>
+            </div>
+            
+            <div class="login-image">
+                <img src="https://via.placeholder.com/500x600" alt="Secure Voting">
+                <div class="login-image-text">
+                    <h3>Secure Online Voting</h3>
+                    <p>Your vote is secure and your privacy is protected.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-container">
+            <div class="footer-logo">
+                <h2>E-Vote</h2>
+                <p>Secure Online Voting Platform</p>
+            </div>
+            <div class="footer-links">
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="index.html#elections">Elections</a></li>
+                        <li><a href="index.html#candidates">Candidates</a></li>
+                        <li><a href="index.html#about">About</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Support</h3>
+                    <ul>
+                        <li><a href="index.html#faq">FAQ</a></li>
+                        <li><a href="index.html#contact">Contact Us</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Contact</h3>
+                    <p><i class="fas fa-envelope"></i> info@evote.com</p>
+                    <p><i class="fas fa-phone"></i> +1 (555) 123-4567</p>
+                    <div class="social-icons">
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-linkedin"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2023 E-Vote. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script src="login.js"></script>
+</body>
+</html>

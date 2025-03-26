@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cast Your Vote - E-Voting System</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #2196F3;
+            --secondary-color: #1976D2;
+            --accent-color: #FFC107;
+            --background-color: #f5f5f5;
+            --text-color: #333;
+            --card-color: #fff;
+            --success-color: #4CAF50;
+            --error-color: #F44336;
+            --border-radius: 12px;
+            --box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: var(--background-color);
+            color: var(--text-color);
+            min-height: 100vh;
+        }
+
+        .vote-container {
+            padding: 20px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .vote-header {
+            background: var(--card-color);
+            padding: 20px 30px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            margin-bottom: 30px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .vote-header h1 {
+            margin: 0 0 10px;
+            color: var(--primary-color);
+        }
+
+        .vote-header p {
+            margin: 5px 0;
+            color: #666;
+        }
+
+        .vote-meta {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 15px;
+            color: #777;
+            font-size: 0.9rem;
+        }
+
+        .vote-card {
+            background: var(--card-color);
+            padding: 30px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            margin-bottom: 30px;
+        }
+
+        .vote-form {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .candidate-option {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            border: 2px solid #eee;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .candidate-option:hover {
+            border-color: var(--primary-color);
+            transform: translateY(-2px);
+        }
+
+        .candidate-option.selected {
+            border-color: var(--primary-color);
+            background-color: rgba(33, 150, 243, 0.05);
+        }
+
+        .candidate-radio {
+            margin-right: 15px;
+        }
+
+        .candidate-details {
+            flex: 1;
+        }
+
+        .candidate-name {
+            font-weight: 500;
+            font-size: 1.1rem;
+        }
+
+        .candidate-position {
+            color: #666;
+            font-size: 0.9rem;
+            margin-top: 5px;
+        }
+
+        .btn {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.95rem;
+        }
+
+        .btn-primary {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--secondary-color);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(33, 150, 243, 0.3);
+        }
+
+        .btn-secondary {
+            background: #eee;
+            color: #333;
+        }
+
+        .btn-secondary:hover {
+            background: #e0e0e0;
+        }
+
+        .form-buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .alert {
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .alert-success {
+            background: rgba(76, 175, 80, 0.1);
+            color: var(--success-color);
+            border: 1px solid rgba(76, 175, 80, 0.2);
+        }
+
+        .alert-error {
+            background: rgba(244, 67, 54, 0.1);
+            color: var(--error-color);
+            border: 1px solid rgba(244, 67, 54, 0.2);
+        }
+
+        .results-preview {
+            margin-top: 30px;
+            display: none;
+        }
+
+        .results-preview h2 {
+            margin-top: 0;
+            color: var(--primary-color);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .candidate-result {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .candidate-name {
+            flex: 1;
+            font-weight: 500;
+        }
+
+        .candidate-votes {
+            margin-left: 10px;
+            font-size: 0.9rem;
+            color: #555;
+        }
+
+        .progress-bar {
+            height: 10px;
+            background: #eee;
+            border-radius: 5px;
+            margin: 5px 0;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--primary-color);
+            border-radius: 5px;
+        }
+
+        @media (max-width: 768px) {
+            .vote-container {
+                padding: 15px;
+            }
+            
+            .vote-header, .vote-card {
+                padding: 20px;
+            }
+            
+            .form-buttons {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="vote-container">
+        <div class="vote-header">
+            <h1 id="electionTitle">Election Title</h1>
+            <p id="electionDescription">Election description will appear here.</p>
+            <div class="vote-meta">
+                <span id="electionDates"><i class="fas fa-calendar-alt"></i> Election dates</span>
+                <span id="electionStatus"><i class="fas fa-circle"></i> Status</span>
+            </div>
+        </div>
+
+        <div class="vote-card">
+            <div class="alert alert-success" id="successMessage" style="display: none;">
+                Your vote has been cast successfully! Thank you for participating.
+            </div>
+            
+            <div class="alert alert-error" id="errorMessage" style="display: none;">
+                There was an error processing your vote. Please try again.
+            </div>
+            
+            <form id="voteForm" class="vote-form">
+                <h2><i class="fas fa-vote-yea"></i> Cast Your Vote</h2>
+                <p>Select one candidate from the list below:</p>
+                
+                <div id="candidatesContainer">
+                    <!-- Candidates will be dynamically loaded here -->
+                </div>
+                
+                <div class="form-buttons">
+                    <button type="submit" class="btn btn-primary" id="submitVoteBtn">
+                        <i class="fas fa-check-circle"></i> Submit Vote
+                    </button>
+                    <a href="dashboard.html" class="btn btn-secondary">
+                        <i class="fas fa-arrow-left"></i> Back to Dashboard
+                    </a>
+                </div>
+            </form>
+            
+            <div class="results-preview" id="resultsPreview">
+                <h2><i class="fas fa-chart-bar"></i> Real-time Results</h2>
+                <p>Current results as votes are being cast:</p>
+                
+                <div id="resultsContainer">
+                    <!-- Results will be dynamically loaded here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Check if user is logged in
+            const currentUser = JSON.parse(sessionStorage.getItem('currentUser'));
+            
+            if (!currentUser) {
+                // Redirect to login page if not logged in
+                window.location.href = 'login.html';
+                return;
+            }
+            
+            // Get election ID from URL parameters
+            const urlParams = new URLSearchParams(window.location.search);
+            const electionId = urlParams.get('id');
+            
+            if (!electionId) {
+                // Redirect to dashboard if no election ID provided
+                window.location.href = 'dashboard.html';
+                return;
+            }
+            
+            // Get election data from localStorage
+            const elections = JSON.parse(localStorage.getItem('elections')) || [];
+            const election = elections.find(e => e.id === electionId);
+            
+            if (!election) {
+                // Redirect to dashboard if election not found
+                window.location.href = 'dashboard.html';
+                return;
+            }
+            
+            // Check if user has already voted
+            const hasVoted = election.voters && election.voters.includes(currentUser.id);
+            
+            // Check if election is active
+            const isActive = election.status === 'active';
+            
+            // If user has already voted or election is not active, redirect to dashboard
+            if (hasVoted) {
+                showSuccessMessage('You have already voted in this election.');
+                document.getElementById('voteForm').style.display = 'none';
+                
+                // If real-time results are enabled, show results
+                if (election.settings.realTimeResults) {
+                    loadAndDisplayResults(election);
+                }
+                return;
+            }
+            
+            if (!isActive) {
+                showErrorMessage('This election is not currently active.');
+                document.getElementById('voteForm').style.display = 'none';
+                return;
+            }
+            
+            // Populate election details
+            document.getElementById('electionTitle').textContent = election.title;
+            document.getElementById('electionDescription').textContent = election.description;
+            
+            // Format dates
+            const startDate = new Date(election.startDate);
+            const endDate = new Date(election.endDate);
+            const formattedStartDate = startDate.toLocaleDateString('en-US', { 
+                year: 'numeric', month: 'short', day: 'numeric' 
+            });
+            const formattedEndDate = endDate.toLocaleDateString('en-US', { 
+                year: 'numeric', month: 'short', day: 'numeric' 
+            });
+            
+            document.getElementById('electionDates').innerHTML = 
+                `<i class="fas fa-calendar-alt"></i> ${formattedStartDate} - ${formattedEndDate}`;
+            
+            // Set status
+            let statusClass = '';
+            let statusText = '';
+            
+            if (election.status === 'active') {
+                statusClass = 'text-success';
+                statusText = 'Active';
+            } else if (election.status === 'upcoming') {
+                statusClass = 'text-warning';
+                statusText = 'Upcoming';
+            } else {
+                statusClass = 'text-danger';
+                statusText = 'Ended';
+            }
+            
+            document.getElementById('electionStatus').innerHTML = 
+                `<i class="fas fa-circle" style="color: ${statusClass === 'text-success' ? '#4CAF50' : statusClass === 'text-warning' ? '#FFC107' : '#F44336'}"></i> ${statusText}`;
+            
+            // Populate candidates
+            const candidatesContainer = document.getElementById('candidatesContainer');
+            
+            if (election.candidates && election.candidates.length > 0) {
+                election.candidates.forEach(candidate => {
+                    const candidateOption = document.createElement('div');
+                    candidateOption.className = 'candidate-option';
+                    candidateOption.dataset.id = candidate.id;
+                    
+                    candidateOption.innerHTML = `
+                        <input type="radio" name="candidate" id="candidate_${candidate.id}" value="${candidate.id}" class="candidate-radio" required>
+                        <div class="candidate-details">
+                            <div class="candidate-name">${candidate.name}</div>
+                            <div class="candidate-position">${candidate.position}</div>
+                        </div>
+                    `;
+                    
+                    // Add click event to select candidate
+                    candidateOption.addEventListener('click', () => {
+                        // Remove selected class from all options
+                        document.querySelectorAll('.candidate-option').forEach(option => {
+                            option.classList.remove('selected');
+                        });
+                        
+                        // Add selected class to clicked option
+                        candidateOption.classList.add('selected');
+                        
+                        // Check the radio input
+                        const radio = candidateOption.querySelector('input[type="radio"]');
+                        if (radio) {
+                            radio.checked = true;
+                        }
+                    });
+                    
+                    candidatesContainer.appendChild(candidateOption);
+                });
+            } else {
+                candidatesContainer.innerHTML = '<p>No candidates available for this election.</p>';
+            }
+            
+            // Handle form submission
+            const voteForm = document.getElementById('voteForm');
+            
+            voteForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                
+                // Get selected candidate
+                const selectedCandidateId = document.querySelector('input[name="candidate"]:checked')?.value;
+                
+                if (!selectedCandidateId) {
+                    showErrorMessage('Please select a candidate to vote.');
+                    return;
+                }
+                
+                // Update election data
+                const elections = JSON.parse(localStorage.getItem('elections')) || [];
+                const electionIndex = elections.findIndex(e => e.id === electionId);
+                
+                if (electionIndex === -1) {
+                    showErrorMessage('Election not found.');
+                    return;
+                }
+                
+                const election = elections[electionIndex];
+                
+                // Find candidate and update votes
+                const candidateIndex = election.candidates.findIndex(c => c.id === selectedCandidateId);
+                
+                if (candidateIndex === -1) {
+                    showErrorMessage('Candidate not found.');
+                    return;
+                }
+                
+                // Increment votes for the selected candidate
+                election.candidates[candidateIndex].votes++;
+                
+                // Add user to voters list
+                if (!election.voters) {
+                    election.voters = [];
+                }
+                
+                election.voters.push(currentUser.id);
+                
+                // Save updated election data
+                elections[electionIndex] = election;
+                localStorage.setItem('elections', JSON.stringify(elections));
+                
+                // Show success message
+                showSuccessMessage('Your vote has been cast successfully! Thank you for participating.');
+                
+                // Hide vote form
+                voteForm.style.display = 'none';
+                
+                // If real-time results are enabled, show results
+                if (election.settings.realTimeResults) {
+                    loadAndDisplayResults(election);
+                }
+                
+                // Add a button to return to dashboard
+                const successMessage = document.getElementById('successMessage');
+                successMessage.innerHTML += `
+                    <div style="margin-top: 15px;">
+                        <a href="dashboard.html" class="btn btn-primary">
+                            <i class="fas fa-home"></i> Back to Dashboard
+                        </a>
+                    </div>
+                `;
+            });
+            
+            // Function to show success message
+            function showSuccessMessage(message) {
+                const successMessage = document.getElementById('successMessage');
+                successMessage.textContent = message;
+                successMessage.style.display = 'block';
+                
+                // Scroll to message
+                successMessage.scrollIntoView({ behavior: 'smooth' });
+            }
+            
+            // Function to show error message
+            function showErrorMessage(message) {
+                const errorMessage = document.getElementById('errorMessage');
+                errorMessage.textContent = message;
+                errorMessage.style.display = 'block';
+                
+                // Scroll to message
+                errorMessage.scrollIntoView({ behavior: 'smooth' });
+            }
+            
+            // Function to load and display results
+            function loadAndDisplayResults(election) {
+                const resultsPreview = document.getElementById('resultsPreview');
+                const resultsContainer = document.getElementById('resultsContainer');
+                
+                if (!resultsPreview || !resultsContainer) return;
+                
+                // Show results section
+                resultsPreview.style.display = 'block';
+                
+                // Calculate total votes for percentage
+                const totalVotes = election.candidates.reduce((sum, candidate) => sum + candidate.votes, 0);
+                
+                // Sort candidates by votes (descending)
+                const sortedCandidates = [...election.candidates].sort((a, b) => b.votes - a.votes);
+                
+                // Create candidate results HTML
+                sortedCandidates.forEach(candidate => {
+                    const percent = totalVotes > 0 ? Math.round((candidate.votes / totalVotes) * 100) : 0;
+                    
+                    const candidateResult = document.createElement('div');
+                    candidateResult.className = 'candidate-result';
+                    candidateResult.innerHTML = `
+                        <div class="candidate-name">${candidate.name}</div>
+                        <div class="candidate-votes">${candidate.votes} votes (${percent}%)</div>
+                    `;
+                    
+                    const progressBar = document.createElement('div');
+                    progressBar.className = 'progress-bar';
+                    progressBar.innerHTML = `<div class="progress-fill" style="width: ${percent}%"></div>`;
+                    
+                    resultsContainer.appendChild(candidateResult);
+                    resultsContainer.appendChild(progressBar);
+                });
+                
+                // Add total votes
+                const totalVotesElement = document.createElement('p');
+                totalVotesElement.innerHTML = `<strong>Total votes cast:</strong> ${totalVotes}`;
+                resultsContainer.appendChild(totalVotesElement);
+            }
+            
+            // Check if real-time results should be shown to voters who haven't voted yet
+            if (election.settings.realTimeResults && !hasVoted) {
+                // Add option to view current results
+                const viewResultsBtn = document.createElement('button');
+                viewResultsBtn.className = 'btn btn-secondary';
+                viewResultsBtn.innerHTML = '<i class="fas fa-chart-bar"></i> View Current Results';
+                viewResultsBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    loadAndDisplayResults(election);
+                });
+                
+                document.querySelector('.form-buttons').appendChild(viewResultsBtn);
+            }
+        });
+    </script>
+</body>
+</html>

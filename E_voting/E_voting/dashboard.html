@@ -1,0 +1,987 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Dashboard - E-Voting System</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #2196F3;
+            --secondary-color: #1976D2;
+            --accent-color: #FFC107;
+            --background-color: #f5f5f5;
+            --text-color: #333;
+            --card-color: #fff;
+            --success-color: #4CAF50;
+            --error-color: #F44336;
+            --border-radius: 12px;
+            --box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: var(--background-color);
+            color: var(--text-color);
+            min-height: 100vh;
+        }
+
+        .dashboard-container {
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .dashboard-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: var(--card-color);
+            padding: 20px 30px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            margin-bottom: 30px;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: var(--primary-color);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+
+        .user-details h2 {
+            margin: 0;
+            font-size: 1.2rem;
+        }
+
+        .user-details p {
+            margin: 5px 0 0;
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.95rem;
+        }
+
+        .btn-primary {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--secondary-color);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(33, 150, 243, 0.3);
+        }
+
+        .btn-danger {
+            background: var(--error-color);
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: #D32F2F;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(244, 67, 54, 0.3);
+        }
+
+        .dashboard-tabs {
+            display: flex;
+            gap: 15px;
+            background: var(--card-color);
+            padding: 5px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            margin-bottom: 30px;
+            overflow-x: auto;
+        }
+
+        .dashboard-tab {
+            padding: 15px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border: none;
+            background: transparent;
+            color: #666;
+        }
+
+        .dashboard-tab:hover {
+            background: rgba(33, 150, 243, 0.08);
+            color: var(--primary-color);
+        }
+
+        .dashboard-tab.active {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .section {
+            background: var(--card-color);
+            padding: 30px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            margin-bottom: 30px;
+            display: none;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        .section-header {
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #f0f0f0;
+            color: var(--primary-color);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .section-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 0;
+        }
+
+        .election-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .election-card {
+            border: 1px solid #eee;
+            border-radius: 12px;
+            overflow: hidden;
+            transition: transform 0.3s, box-shadow 0.3s;
+            background: var(--card-color);
+        }
+
+        .election-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .election-header {
+            padding: 20px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .election-title {
+            margin: 0 0 10px;
+            color: var(--primary-color);
+        }
+
+        .election-dates {
+            font-size: 0.85rem;
+            color: #666;
+            margin-bottom: 10px;
+        }
+
+        .election-status {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            margin-top: 5px;
+        }
+
+        .status-active {
+            background: #E3F2FD;
+            color: #1565C0;
+        }
+
+        .status-upcoming {
+            background: #E8F5E9;
+            color: #2E7D32;
+        }
+
+        .status-ended {
+            background: #FFEBEE;
+            color: #C62828;
+        }
+
+        .election-body {
+            padding: 20px;
+        }
+
+        .election-description {
+            margin-bottom: 15px;
+            font-size: 0.95rem;
+            color: #555;
+        }
+
+        .election-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .profile-form {
+            display: grid;
+            gap: 20px;
+            max-width: 600px;
+        }
+
+        .form-group {
+            display: grid;
+            gap: 8px;
+        }
+
+        .form-group label {
+            font-weight: 500;
+            font-size: 0.95rem;
+        }
+
+        .form-control {
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.2s;
+        }
+
+        .form-control:focus {
+            border-color: var(--primary-color);
+            outline: none;
+        }
+
+        .password-field {
+            position: relative;
+        }
+
+        .password-toggle {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: #777;
+        }
+
+        .password-requirements {
+            margin-top: 5px;
+            font-size: 0.85rem;
+            color: #666;
+        }
+
+        .password-requirements ul {
+            margin: 5px 0 0;
+            padding-left: 20px;
+        }
+
+        .results-container {
+            display: grid;
+            gap: 20px;
+        }
+
+        .result-card {
+            background: var(--card-color);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .result-header {
+            padding: 20px;
+            background: #f9f9f9;
+            border-bottom: 1px solid #eee;
+        }
+
+        .result-body {
+            padding: 20px;
+        }
+
+        .candidate-result {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .candidate-name {
+            flex: 1;
+            font-weight: 500;
+        }
+
+        .candidate-votes {
+            margin-left: 10px;
+            font-size: 0.9rem;
+            color: #555;
+        }
+
+        .progress-bar {
+            height: 10px;
+            background: #eee;
+            border-radius: 5px;
+            margin: 5px 0;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--primary-color);
+            border-radius: 5px;
+        }
+
+        .form-buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 10px;
+        }
+
+        .alert {
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .alert-success {
+            background: rgba(76, 175, 80, 0.1);
+            color: var(--success-color);
+            border: 1px solid rgba(76, 175, 80, 0.2);
+        }
+
+        .alert-error {
+            background: rgba(244, 67, 54, 0.1);
+            color: var(--error-color);
+            border: 1px solid rgba(244, 67, 54, 0.2);
+        }
+
+        .user-info-item {
+            display: flex;
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .user-info-item:last-child {
+            border-bottom: none;
+        }
+
+        .info-label {
+            font-weight: 500;
+            width: 150px;
+            color: #666;
+        }
+
+        .info-value {
+            flex: 1;
+        }
+
+        .password-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 12px;
+            max-width: 500px;
+            width: 100%;
+            padding: 30px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .modal-header h3 {
+            margin: 0;
+            color: var(--primary-color);
+        }
+
+        .close-modal {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #777;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px 0;
+            color: #777;
+        }
+
+        .empty-state i {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            color: #ccc;
+        }
+
+        .empty-state p {
+            margin: 10px 0 0;
+        }
+
+        /* Table styles for staff dashboard */
+        .results-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .results-table th, 
+        .results-table td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .results-table th {
+            background-color: var(--primary-color);
+            color: white;
+            font-weight: 500;
+        }
+        
+        .results-table tr:last-child td {
+            border-bottom: none;
+        }
+        
+        .results-table tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        
+        .results-table tr:hover {
+            background-color: #f1f1f1;
+        }
+        
+        .results-table .btn {
+            padding: 5px 10px;
+            margin-right: 5px;
+            font-size: 0.85rem;
+        }
+        
+        .candidate-input {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        @media (max-width: 768px) {
+            .dashboard-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 20px;
+            }
+            
+            .action-buttons {
+                width: 100%;
+                justify-content: space-between;
+            }
+            
+            .election-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .dashboard-tabs {
+                padding: 5px;
+            }
+            
+            .dashboard-tab {
+                padding: 10px 15px;
+            }
+            
+            .section {
+                padding: 20px;
+            }
+        }
+
+        /* Staff-specific styles */
+        .staff-dashboard-container {
+            display: none;
+        }
+        
+        .staff-section {
+            display: none;
+        }
+
+        .file-upload-container {
+            margin-bottom: 10px;
+        }
+
+        .preview-box {
+            max-height: 150px;
+            overflow-y: auto;
+            border: 1px solid #ddd;
+            padding: 10px;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+
+        .preview-box .empty-preview {
+            color: #999;
+            font-style: italic;
+        }
+
+        .authorized-usn {
+            display: inline-block;
+            background-color: #e3f2fd;
+            color: #1565c0;
+            padding: 4px 8px;
+            margin: 3px;
+            border-radius: 4px;
+            font-size: 0.85rem;
+        }
+        
+        /* Live results styles */
+        .live-badge {
+            display: inline-block;
+            background-color: #f44336;
+            color: white;
+            font-size: 0.7rem;
+            padding: 3px 8px;
+            border-radius: 10px;
+            margin-left: 10px;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.5;
+            }
+            100% {
+                opacity: 1;
+            }
+        }
+        
+        .refresh-info {
+            font-size: 0.85rem;
+            color: #666;
+            margin-top: 5px;
+        }
+        
+        .refresh-info i {
+            animation: rotate 2s linear infinite;
+        }
+        
+        @keyframes rotate {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
+            }
+        }
+        
+        .not-voted-warning {
+            background-color: #fff3e0;
+            border: 1px solid #ffe0b2;
+            color: #e65100;
+            padding: 8px 12px;
+            border-radius: 4px;
+            margin-top: 10px;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .not-voted-warning .btn-sm {
+            padding: 4px 8px;
+            font-size: 0.8rem;
+        }
+        
+        .btn-sm {
+            padding: 5px 10px;
+            font-size: 0.85rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Dashboard Header -->
+        <div class="dashboard-header">
+            <div class="user-info">
+                <div class="avatar" id="userAvatar"></div>
+                <div class="user-details">
+                    <h2 id="userName">User Name</h2>
+                    <p id="userId">User ID</p>
+                </div>
+            </div>
+            <div class="action-buttons">
+                <button id="changePasswordBtn" class="btn btn-primary">
+                    <i class="fas fa-key"></i> Change Password
+                </button>
+                <button id="logoutBtn" class="btn btn-danger">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </button>
+            </div>
+        </div>
+
+        <!-- Student Dashboard Tabs -->
+        <div class="dashboard-tabs student-dashboard-container">
+            <button class="dashboard-tab active" data-tab="my-elections">
+                <i class="fas fa-vote-yea"></i> My Elections
+            </button>
+            <button class="dashboard-tab" data-tab="results">
+                <i class="fas fa-chart-bar"></i> My Results
+            </button>
+            <button class="dashboard-tab" data-tab="profile">
+                <i class="fas fa-user"></i> My Profile
+            </button>
+        </div>
+        
+        <!-- Staff Dashboard Tabs -->
+        <div class="dashboard-tabs staff-dashboard-container">
+            <button class="dashboard-tab active" data-tab="conduct-election">
+                <i class="fas fa-plus-circle"></i> Conduct Election
+            </button>
+            <button class="dashboard-tab" data-tab="manage-elections">
+                <i class="fas fa-tasks"></i> Manage Elections
+            </button>
+            <button class="dashboard-tab" data-tab="all-results">
+                <i class="fas fa-chart-bar"></i> Results
+            </button>
+            <button class="dashboard-tab" data-tab="profile">
+                <i class="fas fa-user"></i> Profile
+            </button>
+        </div>
+
+        <!-- Student Sections -->
+        <!-- My Elections Section -->
+        <section id="my-elections" class="section active student-section">
+            <div class="section-header">
+                <h2 class="section-title"><i class="fas fa-vote-yea"></i> Available Elections</h2>
+            </div>
+            <div class="election-grid" id="electionsContainer">
+                <!-- Elections will be dynamically loaded here -->
+                <div class="empty-state" id="noElectionsMessage" style="display: none;">
+                    <i class="fas fa-inbox"></i>
+                    <h3>No Elections Available</h3>
+                    <p>There are no active elections available for you at the moment.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Results Section -->
+        <section id="results" class="section">
+            <div class="section-header">
+                <h2 class="section-title"><i class="fas fa-chart-bar"></i> My Election Results</h2>
+            </div>
+            <div class="results-container" id="resultsContainer">
+                <!-- Results will be dynamically loaded here -->
+                <div class="empty-state" id="noResultsMessage" style="display: none;">
+                    <i class="fas fa-chart-pie"></i>
+                    <h3>No Results Available</h3>
+                    <p>You haven't participated in any elections yet or results are not published.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Profile Section -->
+        <section id="profile" class="section">
+            <div class="section-header">
+                <h2 class="section-title"><i class="fas fa-user"></i> My Profile</h2>
+            </div>
+            <div class="user-info-item">
+                <div class="info-label">Full Name:</div>
+                <div class="info-value" id="profileName"></div>
+            </div>
+            <div class="user-info-item">
+                <div class="info-label">Student ID:</div>
+                <div class="info-value" id="profileId"></div>
+            </div>
+            <div class="user-info-item">
+                <div class="info-label">Email:</div>
+                <div class="info-value" id="userEmail"></div>
+            </div>
+            <div class="user-info-item">
+                <div class="info-label">Department:</div>
+                <div class="info-value" id="userDepartment"></div>
+            </div>
+            <div class="user-info-item">
+                <div class="info-label">Account Type:</div>
+                <div class="info-value" id="profileType"></div>
+            </div>
+            <div class="user-info-item">
+                <div class="info-label">Joined:</div>
+                <div class="info-value" id="profileDate"></div>
+            </div>
+            <div class="form-buttons">
+                <button id="openChangePasswordBtn" class="btn btn-primary">
+                    <i class="fas fa-key"></i> Change Password
+                </button>
+            </div>
+        </section>
+
+        <!-- Staff Sections -->
+        <!-- Conduct Election Section -->
+        <section id="conduct-election" class="section staff-section">
+            <div class="section-header">
+                <h2 class="section-title"><i class="fas fa-plus-circle"></i> Conduct New Election</h2>
+            </div>
+            <form id="createElectionForm" class="profile-form">
+                <div class="form-group">
+                    <label for="electionTitle">Election Title</label>
+                    <input type="text" id="electionTitle" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="electionDescription">Description</label>
+                    <textarea id="electionDescription" class="form-control" rows="3" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="startDate">Start Date</label>
+                    <input type="date" id="startDate" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="endDate">End Date</label>
+                    <input type="date" id="endDate" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="eligibility">Eligible Voters</label>
+                    <select id="eligibility" class="form-control" required onchange="toggleAuthorizedSection()">
+                        <option value="all">All Users</option>
+                        <option value="students">All Students</option>
+                        <option value="staff">All Staff</option>
+                        <option value="authorized">Authorized Users Only</option>
+                    </select>
+                </div>
+                
+                <div class="form-group" id="authorizedUsersSection" style="display: none;">
+                    <label for="csvFile">Upload Authorized USNs (CSV File)</label>
+                    <div class="file-upload-container">
+                        <input type="file" id="csvFile" accept=".csv" class="form-control">
+                        <small class="form-text text-muted">CSV file should contain USNs in a single column without headers</small>
+                    </div>
+                    <div id="csvPreview" class="mt-3">
+                        <h4>Authorized USNs Preview:</h4>
+                        <div id="authorizedUsersPreview" class="preview-box">
+                            <div class="empty-preview">No file selected</div>
+                        </div>
+                        <div class="mt-2">
+                            <span id="authorizedUsersCount">0</span> authorized users loaded
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label>Election Settings</label>
+                    <div>
+                        <input type="checkbox" id="anonymousVoting" checked>
+                        <label for="anonymousVoting">Anonymous Voting</label>
+                    </div>
+                    <div>
+                        <input type="checkbox" id="publicResults" checked>
+                        <label for="publicResults">Public Results</label>
+                    </div>
+                    <div>
+                        <input type="checkbox" id="realTimeResults">
+                        <label for="realTimeResults">Real-time Results</label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Candidates</label>
+                    <div id="candidatesContainer">
+                        <div class="candidate-input">
+                            <input type="text" class="form-control candidate-name" placeholder="Candidate Name" required>
+                            <input type="text" class="form-control candidate-position" placeholder="Position" required>
+                            <button type="button" class="btn btn-danger remove-candidate" style="display: none;">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <button type="button" id="addCandidateBtn" class="btn btn-primary" style="margin-top: 10px;">
+                        <i class="fas fa-plus"></i> Add Candidate
+                    </button>
+                </div>
+                <div class="form-buttons">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save"></i> Create Election
+                    </button>
+                    <button type="reset" class="btn btn-danger">
+                        <i class="fas fa-times"></i> Reset
+                    </button>
+                </div>
+            </form>
+        </section>
+        
+        <!-- Manage Elections Section -->
+        <section id="manage-elections" class="section staff-section">
+            <div class="section-header">
+                <h2 class="section-title"><i class="fas fa-tasks"></i> Manage Elections</h2>
+                <div>
+                    <button id="refreshElectionsBtn" class="btn btn-primary">
+                        <i class="fas fa-sync-alt"></i> Refresh
+                    </button>
+                </div>
+            </div>
+            <div id="electionsTableContainer">
+                <table class="results-table" id="manageElectionsTable">
+                    <thead>
+                        <tr>
+                            <th>Title</th>
+                            <th>Start Date</th>
+                            <th>End Date</th>
+                            <th>Status</th>
+                            <th>Eligible Voters</th>
+                            <th>Total Votes</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="manageElectionsBody">
+                        <!-- Election rows will be dynamically added here -->
+                    </tbody>
+                </table>
+                <div class="empty-state" id="noManageElectionsMessage" style="display: none;">
+                    <i class="fas fa-inbox"></i>
+                    <h3>No Elections Found</h3>
+                    <p>You haven't created any elections yet.</p>
+                </div>
+            </div>
+        </section>
+        
+        <!-- All Results Section -->
+        <section id="all-results" class="section staff-section">
+            <div class="section-header">
+                <h2 class="section-title"><i class="fas fa-chart-bar"></i> Election Results</h2>
+            </div>
+            <div class="results-container" id="allResultsContainer">
+                <!-- Results will be dynamically loaded here -->
+                <div class="empty-state" id="noAllResultsMessage" style="display: none;">
+                    <i class="fas fa-chart-pie"></i>
+                    <h3>No Results Available</h3>
+                    <p>There are no elections with results to display.</p>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Password Change Modal -->
+    <div class="password-modal" id="passwordModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-key"></i> Change Password</h3>
+                <button class="close-modal" id="closeModal">&times;</button>
+            </div>
+            <div class="alert alert-success" id="passwordSuccessMessage">
+                Password changed successfully!
+            </div>
+            <div class="alert alert-error" id="passwordErrorMessage">
+                Error changing password.
+            </div>
+            <form id="changePasswordForm" class="profile-form">
+                <div class="form-group">
+                    <label for="currentPassword">Current Password</label>
+                    <div class="password-field">
+                        <input type="password" id="currentPassword" class="form-control" required>
+                        <button type="button" class="password-toggle" data-target="currentPassword">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </div>
+                    <div id="currentPasswordError" class="error-message"></div>
+                </div>
+                <div class="form-group">
+                    <label for="newPassword">New Password</label>
+                    <div class="password-field">
+                        <input type="password" id="newPassword" class="form-control" required>
+                        <button type="button" class="password-toggle" data-target="newPassword">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </div>
+                    <div id="newPasswordError" class="error-message"></div>
+                    <div class="password-requirements">
+                        Password should:
+                        <ul>
+                            <li>Be at least 8 characters long</li>
+                            <li>Include uppercase and lowercase letters</li>
+                            <li>Include at least one number</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="confirmPassword">Confirm New Password</label>
+                    <div class="password-field">
+                        <input type="password" id="confirmPassword" class="form-control" required>
+                        <button type="button" class="password-toggle" data-target="confirmPassword">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </div>
+                    <div id="confirmPasswordError" class="error-message"></div>
+                </div>
+                <div class="form-buttons">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save"></i> Update Password
+                    </button>
+                    <button type="button" class="btn btn-danger" id="cancelPasswordChange">
+                        <i class="fas fa-times"></i> Cancel
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="assets/js/dashboard.js"></script>
+    <script>
+    function toggleAuthorizedSection() {
+        const eligibilitySelect = document.getElementById('eligibility');
+        const authorizedSection = document.getElementById('authorizedUsersSection');
+        
+        if (eligibilitySelect.value === 'authorized') {
+            authorizedSection.style.display = 'block';
+        } else {
+            authorizedSection.style.display = 'none';
+        }
+    }
+    </script>
+</body>
+</html>

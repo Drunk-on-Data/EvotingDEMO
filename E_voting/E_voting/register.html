@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - E-Voting System</title>
+    <link rel="stylesheet" href="assets/css/styles.css">
+    <link rel="stylesheet" href="assets/css/register.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="logo">
+                <h1><a href="index.html">E-Vote</a></h1>
+            </div>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="index.html#elections">Elections</a></li>
+                <li><a href="index.html#candidates">Candidates</a></li>
+                <li><a href="index.html#about">About</a></li>
+                <li><a href="index.html#contact">Contact</a></li>
+            </ul>
+            <div class="auth-buttons">
+                <a href="login.html" class="btn login-btn">Login</a>
+                <a href="register.html" class="btn register-btn active">Register</a>
+            </div>
+            <div class="hamburger">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+        </nav>
+    </header>
+
+    <section class="register-section">
+        <div class="register-container">
+            <div class="register-header">
+                <h2>Create an Account</h2>
+                <p>Join our secure E-Voting platform to make your voice heard</p>
+            </div>
+            <form id="registerForm" class="register-form">
+                <div class="form-group">
+                    <label for="fullName"><i class="fas fa-user"></i> Full Name</label>
+                    <input type="text" id="fullName" placeholder="Enter your full name" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="voterType"><i class="fas fa-users"></i> User Type</label>
+                    <select id="voterType" required>
+                        <option value="" disabled selected>Select your user type</option>
+                        <option value="student">Student</option>
+                        <option value="staff">Staff</option>
+                    </select>
+                </div>
+                
+                <div class="form-group" id="idFieldContainer">
+                    <label for="identificationField" id="idFieldLabel"><i class="fas fa-id-badge"></i> Identification Number</label>
+                    <input type="text" id="identificationField" placeholder="Enter your identification number" required>
+                    <small id="idFieldHelper" class="helper-text">Select your user type first</small>
+                </div>
+                
+                <div class="form-group">
+                    <label for="password"><i class="fas fa-lock"></i> Password</label>
+                    <div class="password-input-container">
+                        <input type="password" id="password" placeholder="Create a password" required>
+                        <span id="passwordToggle" class="password-toggle">
+                            <i class="fas fa-eye"></i>
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="confirmPassword"><i class="fas fa-lock"></i> Confirm Password</label>
+                    <div class="password-input-container">
+                        <input type="password" id="confirmPassword" placeholder="Confirm your password" required>
+                        <span id="confirmPasswordToggle" class="password-toggle">
+                            <i class="fas fa-eye"></i>
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="form-group captcha-container">
+                    <label for="captchaInput"><i class="fas fa-shield-alt"></i> CAPTCHA Verification</label>
+                    <div class="captcha-box">
+                        <span id="captchaText" class="captcha-text"></span>
+                        <button type="button" id="captchaRefresh" class="captcha-refresh">
+                            <i class="fas fa-sync-alt"></i>
+                        </button>
+                    </div>
+                    <input type="text" id="captchaInput" placeholder="Enter the CAPTCHA code" required>
+                    <small class="captcha-info">Enter the characters shown above to verify you're human</small>
+                </div>
+                
+                <div class="form-group terms-container">
+                    <div class="checkbox-container">
+                        <input type="checkbox" id="termsAgreement" required>
+                        <label for="termsAgreement">I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a></label>
+                    </div>
+                </div>
+                
+                <div id="registerMessage" class="register-message"></div>
+                
+                <button type="submit" class="register-submit-btn">
+                    <i class="fas fa-user-plus"></i> Create Account
+                </button>
+            </form>
+            
+            <div class="login-prompt">
+                <p>Already have an account? <a href="login.html">Login here</a></p>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-container">
+            <div class="footer-logo">
+                <h2>E-Vote</h2>
+                <p>Secure Online Voting Platform</p>
+            </div>
+            <div class="footer-links">
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="index.html#elections">Elections</a></li>
+                        <li><a href="index.html#candidates">Candidates</a></li>
+                        <li><a href="index.html#about">About</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Support</h3>
+                    <ul>
+                        <li><a href="index.html#faq">FAQ</a></li>
+                        <li><a href="index.html#contact">Contact Us</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Contact</h3>
+                    <p><i class="fas fa-envelope"></i> info@evote.com</p>
+                    <p><i class="fas fa-phone"></i> +1 (555) 123-4567</p>
+                    <div class="social-icons">
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-linkedin"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2023 E-Vote. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="assets/js/script.js"></script>
+    <script src="assets/js/register.js"></script>
+</body>
+</html> 

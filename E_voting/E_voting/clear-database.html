@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clear Database - E-Voting System</title>
+    <link rel="stylesheet" href="assets/css/styles.css">
+    <style>
+        .clear-container {
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 30px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        
+        .warning {
+            color: #dc3545;
+            font-weight: bold;
+            margin: 20px 0;
+            padding: 15px;
+            background-color: #f8d7da;
+            border-radius: 5px;
+            border: 1px solid #f5c6cb;
+        }
+        
+        .btn {
+            display: inline-block;
+            margin: 10px;
+            padding: 12px 25px;
+            border-radius: 5px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+            text-decoration: none;
+        }
+        
+        .btn-danger {
+            background: linear-gradient(135deg, #ff416c, #ff4b2b);
+            color: white;
+            border: none;
+        }
+        
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+            border: none;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+        
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 5px;
+            display: none;
+        }
+        
+        .result.success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .result.error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        
+        .options {
+            margin-top: 30px;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+        
+        .reset-option {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+        }
+    </style>
+</head>
+<body>
+    <header class="main-header">
+        <div class="container">
+            <div class="logo">
+                <a href="index.html">
+                    <i class="fas fa-vote-yea"></i>
+                    <span>E-Voting</span>
+                </a>
+            </div>
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="#">Elections</a></li>
+                    <li><a href="#">Candidates</a></li>
+                    <li><a href="#">About</a></li>
+                    <li><a href="#">Contact</a></li>
+                </ul>
+            </nav>
+            <div class="auth-buttons">
+                <a href="login.html" class="login-btn">Login</a>
+                <a href="register.html" class="register-btn">Register</a>
+            </div>
+            <div class="mobile-menu-btn">
+                <i class="fas fa-bars"></i>
+            </div>
+        </div>
+    </header>
+
+    <div class="clear-container">
+        <h1>Database Management</h1>
+        
+        <div class="warning">
+            <p>⚠️ WARNING: This page allows you to clear all data from the E-Voting system database.</p>
+            <p>This action cannot be undone. All user accounts, credentials, and other stored data will be permanently deleted.</p>
+        </div>
+        
+        <div class="options">
+            <button id="clearAllBtn" class="btn btn-danger">Clear All Data</button>
+            <a href="view-database.html" class="btn btn-secondary">View Database</a>
+            <a href="index.html" class="btn btn-secondary">Cancel</a>
+        </div>
+        
+        <div id="result" class="result"></div>
+        
+        <div class="reset-option">
+            <h2>Reset to Default</h2>
+            <p>Alternatively, you can reset the database to its default state with the admin and test user accounts.</p>
+            <button id="resetDefaultBtn" class="btn btn-secondary">Reset to Default</button>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const clearAllBtn = document.getElementById('clearAllBtn');
+            const resetDefaultBtn = document.getElementById('resetDefaultBtn');
+            const resultDiv = document.getElementById('result');
+            
+            // Clear all data
+            clearAllBtn.addEventListener('click', () => {
+                try {
+                    // Clear all localStorage data
+                    localStorage.clear();
+                    
+                    // Clear all sessionStorage data
+                    sessionStorage.clear();
+                    
+                    // Show success message
+                    resultDiv.textContent = 'All data has been successfully cleared from the database.';
+                    resultDiv.className = 'result success';
+                    resultDiv.style.display = 'block';
+                    
+                    // Disable the clear button
+                    clearAllBtn.disabled = true;
+                    clearAllBtn.style.opacity = '0.5';
+                    clearAllBtn.style.cursor = 'not-allowed';
+                } catch (error) {
+                    // Show error message
+                    resultDiv.textContent = `Error clearing data: ${error.message}`;
+                    resultDiv.className = 'result error';
+                    resultDiv.style.display = 'block';
+                }
+            });
+            
+            // Reset to default
+            resetDefaultBtn.addEventListener('click', () => {
+                try {
+                    // Clear existing data
+                    localStorage.clear();
+                    sessionStorage.clear();
+                    
+                    // Create default admin and test user accounts
+                    const defaultUsers = [
+                        {
+                            id: 'admin123',
+                            fullName: 'Admin User',
+                            email: 'admin@evoting.com',
+                            password: 'admin123',
+                            type: 'admin',
+                            registrationDate: new Date().toISOString(),
+                            verified: true
+                        },
+                        {
+                            id: 'voter123',
+                            fullName: 'Test Voter',
+                            email: 'voter@evoting.com',
+                            password: 'voter123',
+                            type: 'voter',
+                            voterType: 'student',
+                            registrationDate: new Date().toISOString(),
+                            verified: true
+                        }
+                    ];
+                    
+                    // Save default users to localStorage
+                    localStorage.setItem('users', JSON.stringify(defaultUsers));
+                    
+                    // Initialize empty OTP storage
+                    localStorage.setItem('otpStorage', JSON.stringify({}));
+                    
+                    // Show success message
+                    resultDiv.textContent = 'Database has been reset to default state with admin and test user accounts.';
+                    resultDiv.className = 'result success';
+                    resultDiv.style.display = 'block';
+                    
+                    // Re-enable the clear button
+                    clearAllBtn.disabled = false;
+                    clearAllBtn.style.opacity = '1';
+                    clearAllBtn.style.cursor = 'pointer';
+                } catch (error) {
+                    // Show error message
+                    resultDiv.textContent = `Error resetting data: ${error.message}`;
+                    resultDiv.className = 'result error';
+                    resultDiv.style.display = 'block';
+                }
+            });
+        });
+    </script>
+</body>
+</html> 

@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>E-Voting System</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="logo">
+                <h1>E-Vote</h1>
+            </div>
+            <ul class="nav-links">
+                <li><a href="index.html" class="active">Home</a></li>
+                <li><a href="#elections">Elections</a></li>
+                <li><a href="#candidates">Candidates</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+            <div class="auth-buttons">
+                <a href="login.html" class="btn login-btn">Login</a>
+                <a href="register.html" class="btn register-btn">Register</a>
+            </div>
+            <div class="hamburger">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section class="hero">
+            <div class="hero-content">
+                <h1>Secure Online Voting Platform</h1>
+                <p>Vote securely from anywhere, anytime. Your voice matters!</p>
+                <a href="login.html" class="btn cta-btn">Get Started</a>
+            </div>
+            <div class="hero-image">
+                <img src="https://via.placeholder.com/600x400" alt="E-Voting Illustration">
+            </div>
+        </section>
+
+        <section id="features" class="features">
+            <h2 class="section-title">Why Choose Our E-Voting Platform?</h2>
+            <div class="features-container">
+                <div class="feature-card">
+                    <i class="fas fa-shield-alt"></i>
+                    <h3>Secure Voting</h3>
+                    <p>Advanced encryption and security measures to protect your vote.</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-clock"></i>
+                    <h3>24/7 Availability</h3>
+                    <p>Vote at your convenience, anytime during the election period.</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-mobile-alt"></i>
+                    <h3>Mobile Friendly</h3>
+                    <p>Vote from any device - computer, tablet, or smartphone.</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-chart-bar"></i>
+                    <h3>Real-time Results</h3>
+                    <p>View election results as they come in after voting closes.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="elections" class="elections">
+            <h2 class="section-title">Upcoming Elections</h2>
+            <div class="elections-container">
+                <div class="election-card">
+                    <div class="election-header">
+                        <h3>Student Council Election</h3>
+                        <span class="status active">Active</span>
+                    </div>
+                    <p class="election-date"><i class="far fa-calendar-alt"></i> May 15 - May 20, 2023</p>
+                    <p class="election-desc">Vote for your student representatives for the upcoming academic year.</p>
+                    <a href="login.html" class="btn vote-btn">Vote Now</a>
+                </div>
+                <div class="election-card">
+                    <div class="election-header">
+                        <h3>Community Board Election</h3>
+                        <span class="status upcoming">Upcoming</span>
+                    </div>
+                    <p class="election-date"><i class="far fa-calendar-alt"></i> June 10 - June 15, 2023</p>
+                    <p class="election-desc">Select members for the community development board.</p>
+                    <a href="#" class="btn disabled">Coming Soon</a>
+                </div>
+                <div class="election-card">
+                    <div class="election-header">
+                        <h3>Club President Election</h3>
+                        <span class="status upcoming">Upcoming</span>
+                    </div>
+                    <p class="election-date"><i class="far fa-calendar-alt"></i> July 5 - July 10, 2023</p>
+                    <p class="election-desc">Vote for the new president of the community club.</p>
+                    <a href="#" class="btn disabled">Coming Soon</a>
+                </div>
+            </div>
+        </section>
+
+        <section id="how-it-works" class="how-it-works">
+            <h2 class="section-title">How It Works</h2>
+            <div class="steps-container">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <h3>Register</h3>
+                    <p>Create an account with your credentials and verify your identity.</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <h3>Browse Elections</h3>
+                    <p>View available and upcoming elections you're eligible to participate in.</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <h3>Cast Your Vote</h3>
+                    <p>Select your preferred candidate and submit your secure vote.</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">4</div>
+                    <h3>View Results</h3>
+                    <p>Check the election results after the voting period ends.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="testimonials" class="testimonials">
+            <h2 class="section-title">What Users Say</h2>
+            <div class="testimonials-container">
+                <div class="testimonial-card">
+                    <div class="testimonial-content">
+                        <p>"The E-Voting platform made it so easy to participate in our community election. I could vote from home without any hassle!"</p>
+                    </div>
+                    <div class="testimonial-author">
+                        <img src="https://via.placeholder.com/50" alt="User Avatar">
+                        <div class="author-info">
+                            <h4>Sarah Johnson</h4>
+                            <p>Community Member</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <div class="testimonial-content">
+                        <p>"As an election administrator, this platform has simplified the entire voting process. The results are accurate and available instantly."</p>
+                    </div>
+                    <div class="testimonial-author">
+                        <img src="https://via.placeholder.com/50" alt="User Avatar">
+                        <div class="author-info">
+                            <h4>Michael Brown</h4>
+                            <p>Election Coordinator</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-container">
+            <div class="footer-logo">
+                <h2>E-Vote</h2>
+                <p>Secure Online Voting Platform</p>
+            </div>
+            <div class="footer-links">
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="#elections">Elections</a></li>
+                        <li><a href="#candidates">Candidates</a></li>
+                        <li><a href="#about">About</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Support</h3>
+                    <ul>
+                        <li><a href="#faq">FAQ</a></li>
+                        <li><a href="#contact">Contact Us</a></li>
+                        <li><a href="#privacy">Privacy Policy</a></li>
+                        <li><a href="#terms">Terms of Service</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Contact</h3>
+                    <p><i class="fas fa-envelope"></i> info@evote.com</p>
+                    <p><i class="fas fa-phone"></i> +1 (555) 123-4567</p>
+                    <div class="social-icons">
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-linkedin"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2023 E-Vote. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

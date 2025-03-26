@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QR Verification - E-Voting System</title>
+    <link rel="stylesheet" href="assets/css/styles.css">
+    <link rel="stylesheet" href="assets/css/register.css">
+    <link rel="stylesheet" href="assets/css/qr-verification.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- QR Code Library - Using a more reliable version -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="logo">
+                <h1><a href="index.html">E-Vote</a></h1>
+            </div>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="index.html#elections">Elections</a></li>
+                <li><a href="index.html#candidates">Candidates</a></li>
+                <li><a href="index.html#about">About</a></li>
+                <li><a href="index.html#contact">Contact</a></li>
+            </ul>
+            <div class="auth-buttons">
+                <a href="login.html" class="btn login-btn">Login</a>
+                <a href="register.html" class="btn register-btn">Register</a>
+            </div>
+            <div class="hamburger">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+        </nav>
+    </header>
+
+    <section class="register-section">
+        <div class="register-container">
+            <div class="register-header">
+                <h2>QR Code Verification</h2>
+                <p>Your account has been created successfully!</p>
+            </div>
+            <div class="qr-verification-container">
+                <div class="user-info">
+                    <h3>User Information</h3>
+                    <div class="info-item">
+                        <span><i class="fas fa-user"></i> Name:</span>
+                        <span id="user-fullname">Loading...</span>
+                    </div>
+                    <div class="info-item">
+                        <span><i class="fas fa-id-badge"></i> ID:</span>
+                        <span id="user-id">Loading...</span>
+                    </div>
+                    <div class="info-item">
+                        <span><i class="fas fa-users"></i> Type:</span>
+                        <span id="user-type">Loading...</span>
+                    </div>
+                </div>
+                
+                <div class="qr-code-section">
+                    <h3>Your QR Code</h3>
+                    <p>This QR code is linked to your account. Save it for future verification.</p>
+                    <div id="qrcode-container" class="qrcode-display">
+                        <div class="loading-spinner">
+                            <i class="fas fa-spinner fa-spin"></i> Generating QR code...
+                        </div>
+                    </div>
+                    <button id="regenerate-qr" class="btn qr-btn">
+                        <i class="fas fa-sync-alt"></i> Regenerate QR
+                    </button>
+                    <button id="download-qr" class="btn qr-btn">
+                        <i class="fas fa-download"></i> Download QR
+                    </button>
+                </div>
+                
+                <div class="verification-notes">
+                    <h3>Important Notes</h3>
+                    <ul>
+                        <li>This QR code contains your verification credentials</li>
+                        <li>You will need to scan this QR code for certain voting activities</li>
+                        <li>Keep this QR code private and do not share it with others</li>
+                        <li>You can always regenerate your QR code if needed</li>
+                    </ul>
+                </div>
+                
+                <div class="action-buttons">
+                    <a href="login.html" class="btn login-redirect-btn">
+                        <i class="fas fa-sign-in-alt"></i> Proceed to Login
+                    </a>
+                </div>
+                
+                <div id="debug-info" class="debug-info" style="display: none;">
+                    <h3>Debug Information</h3>
+                    <pre id="debug-output"></pre>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-container">
+            <div class="footer-logo">
+                <h2>E-Vote</h2>
+                <p>Secure Online Voting Platform</p>
+            </div>
+            <div class="footer-links">
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="index.html#elections">Elections</a></li>
+                        <li><a href="index.html#candidates">Candidates</a></li>
+                        <li><a href="index.html#about">About</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Support</h3>
+                    <ul>
+                        <li><a href="index.html#faq">FAQ</a></li>
+                        <li><a href="index.html#contact">Contact Us</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Contact</h3>
+                    <p><i class="fas fa-envelope"></i> info@evote.com</p>
+                    <p><i class="fas fa-phone"></i> +1 (555) 123-4567</p>
+                    <div class="social-icons">
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-linkedin"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2023 E-Vote. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Add inline script to check QR code library and provide fallback -->
+    <script>
+        // Override console.log to show debug information in the UI
+        const originalConsoleLog = console.log;
+        const originalConsoleError = console.error;
+        
+        function addDebugMessage(message, isError = false) {
+            const debugOutput = document.getElementById('debug-output');
+            if (debugOutput) {
+                const line = document.createElement('div');
+                line.textContent = isError ? '❌ ' + message : '✓ ' + message;
+                line.style.color = isError ? 'red' : 'green';
+                debugOutput.appendChild(line);
+                
+                // Show debug section if there's an error
+                if (isError) {
+                    document.getElementById('debug-info').style.display = 'block';
+                }
+            }
+        }
+        
+        console.log = function() {
+            // Call original console.log
+            originalConsoleLog.apply(console, arguments);
+            // Add to debug output
+            addDebugMessage(Array.from(arguments).join(' '));
+        };
+        
+        console.error = function() {
+            // Call original console.error
+            originalConsoleError.apply(console, arguments);
+            // Add to debug output
+            addDebugMessage(Array.from(arguments).join(' '), true);
+            
+            // Show debug section on error
+            document.getElementById('debug-info').style.display = 'block';
+        };
+        
+        // QRCode fallback initialization if the library doesn't have CorrectLevel
+        if (typeof QRCode !== 'undefined' && typeof QRCode.CorrectLevel === 'undefined') {
+            console.log('Adding CorrectLevel to QRCode library');
+            QRCode.CorrectLevel = {
+                L: 1,
+                M: 0,
+                Q: 3,
+                H: 2
+            };
+        }
+        
+        // Check QR code library
+        window.addEventListener('load', function() {
+            // Display debug by default during troubleshooting
+            document.getElementById('debug-info').style.display = 'block';
+            
+            if (typeof QRCode === 'undefined') {
+                console.error('QRCode library not loaded!');
+                
+                // Try to load the library again
+                const script = document.createElement('script');
+                script.src = "https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js";
+                script.onload = function() {
+                    console.log('QRCode library loaded successfully.');
+                    
+                    // Initialize CorrectLevel if not present
+                    if (typeof QRCode.CorrectLevel === 'undefined') {
+                        console.log('Adding CorrectLevel to loaded QRCode library');
+                        QRCode.CorrectLevel = {
+                            L: 1,
+                            M: 0,
+                            Q: 3,
+                            H: 2
+                        };
+                    }
+                    
+                    // Check if we have a user ID in session storage
+                    if (sessionStorage.getItem('newUserId') || sessionStorage.getItem('currentUserId')) {
+                        // QR code will be generated by the main script
+                        console.log('User ID found, QR code will be generated');
+                    }
+                };
+                script.onerror = function() {
+                    console.error('Failed to load QRCode library!');
+                    document.getElementById('qrcode-container').innerHTML = 
+                        '<div class="error-message">Failed to load QR code library. Please check your internet connection and try again.</div>';
+                };
+                document.body.appendChild(script);
+            } else {
+                console.log('QRCode library loaded.');
+                
+                // Initialize CorrectLevel if not present
+                if (typeof QRCode.CorrectLevel === 'undefined') {
+                    console.log('Adding CorrectLevel to existing QRCode library');
+                    QRCode.CorrectLevel = {
+                        L: 1,
+                        M: 0,
+                        Q: 3,
+                        H: 2
+                    };
+                }
+            }
+        });
+    </script>
+
+    <script src="assets/js/script.js"></script>
+    <script src="assets/js/qr-verification.js"></script>
+</body>
+</html> 
